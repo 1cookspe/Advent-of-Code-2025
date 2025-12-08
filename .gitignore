@@ -1,0 +1,30 @@
+# Compiled files & Build output
+*.o
+*.a
+*.so
+*.dll
+*.exe
+bin/
+build/
+cmake-build-*/
+Debug/
+Release/
+
+# IDE/Editor specific files (VS Code, CLion, etc.)
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Logs & Temp files
+*.log
+*.tmp
+*~
+
+# Clang-specific cache/temp (optional but good practice)
+.cache/
+.clangd/
