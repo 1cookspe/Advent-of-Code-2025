@@ -13,8 +13,8 @@ int perform_mod(int a, int b) {
 }
 
 int part1() {
-	// Create istream object to read in the input
-	ifstream file("input.txt");
+	// Create ifstream object to read in the input
+	ifstream file("./input.txt");
 	// Declare str to read in the line
 	string str;
 	// Initialize the starting point for the dial, which is 50

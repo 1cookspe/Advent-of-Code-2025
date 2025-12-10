@@ -53,62 +53,45 @@ long part1() {
 	return repeatingSum;
 }
 
+// Helper: check if string is composed of repeated substrings
+bool isRepeatingPattern(const std::string& s) {
+    int n = s.size();
+    for (int len = 1; len <= n/2; ++len) {
+        if (n % len != 0) continue; // must divide evenly
+        std::string block = s.substr(0, len);
+        bool ok = true;
+        for (int i = len; i < n; i += len) {
+            if (s.substr(i, len) != block) {
+                ok = false;
+                break;
+            }
+        }
+        if (ok) return true;
+    }
+    return false;
+}
+
 long part2() {
-	// Create ifstream object to read in the input
-	std::ifstream file("./input_test.txt");
-	// Declare string to read in the line
-	std::string str;
-	// Hold the sum of the repeating IDs
-	long repeatingSum = 0;
+    std::ifstream file("./input.txt");
+    std::string str;
+    long repeatingSum = 0;
 
-	while (std::getline(file, str, ',')) {
-		// Find the position of the dash to split the range
-		size_t dashPos = str.find('-');
-		// Extract the two numbers as substrings
-		long num1 = std::stol(str.substr(0, dashPos));
-		long num2 = std::stol(str.substr(dashPos + 1));
-		// Loop from num1 to num2 and check if it is repeating
-		for (long i = num1; i <= num2; i++) {
-			// Determine the number of digits
-			std::string i_str = std::to_string(i);
-			int num_chars = i_str.length();
+    while (std::getline(file, str, ',')) {
+        size_t dashPos = str.find('-');
+        long num1 = std::stol(str.substr(0, dashPos));
+        long num2 = std::stol(str.substr(dashPos + 1));
 
-			// Create a hashmap to count the letters and the number of occurrences
-			std::unordered_map<char, int> letterOccurrences = {};
+        for (long i = num1; i <= num2; i++) {
+            std::string i_str = std::to_string(i);
 
-			for (const char& letter: i_str) {
-				letterOccurrences[letter]++;
-			}
-
-			bool isRepeatingNumber = true;
-
-			// Loop through each entry of the hashmap and check if any values are different
-			// If so, then we do not have a repeating number
-			int lastNumOccurrences = -1;
-			for (const auto& [letter, numOccurrences] : letterOccurrences) {
-				// std::cout << "letter: " << letter << " and numOccurrences: " << numOccurrences << std::endl;
-				// Need to set last num occurrences if it has not been yet
-				if (lastNumOccurrences == -1) {
-					lastNumOccurrences = numOccurrences;
-					continue;
-				}
-				// Check if last num occurrences is different from numOccurrences
-				if (numOccurrences == 1 || numOccurrences != lastNumOccurrences) {
-					// Break of loop since this is not repeating
-					isRepeatingNumber = false;
-					break;
-				}
-				// Update the lastNumOccurrences
-				lastNumOccurrences = numOccurrences;
-			}
-			// If it is a repeating number, we will add to the sum
-			if (isRepeatingNumber) {
-				std::cout << "is repeating for " << i << std::endl;
-				repeatingSum += i;
-			}
-		}
-	}
-	return repeatingSum;
+            // Use the helper instead of hashmap logic
+            if (isRepeatingPattern(i_str)) {
+                // std::cout << "is repeating for " << i << std::endl;
+                repeatingSum += i;
+            }
+        }
+    }
+    return repeatingSum;
 }
 
 int main() {
